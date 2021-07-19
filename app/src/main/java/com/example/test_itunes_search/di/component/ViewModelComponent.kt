@@ -1,6 +1,6 @@
 package com.example.test_itunes_search.di.component
 
-import com.example.myktl.di.module.ViewModelModule
+import com.example.test_itunes_search.di.module.ViewModelModule
 import com.example.test_itunes_search.presentation.MainActivity
 import dagger.Component
 

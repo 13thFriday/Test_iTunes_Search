@@ -1,7 +1,7 @@
-package com.example.myktl.di.module
+package com.example.test_itunes_search.di.module
 
-import com.example.myktl.presentation.SearchResultViewModel
-import com.example.myktl.usecase.NetworkUseCase
+import com.example.test_itunes_search.domain.NetworkUseCase
+import com.example.test_itunes_search.presentation.SearchResultViewModel
 import dagger.Module
 import dagger.Provides
 
