@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_itunes_search.R
 import com.example.test_itunes_search.repository.models.SearchResult
@@ -51,13 +52,17 @@ class SearchResultAdapter(private val context: Context):
     }
 
     fun updateData(searchList: List<SearchResult>) {
+
+        val diffCallback = SearchResultDiffCallback(searchResult, searchList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         searchResult.addAll(searchList)
-        notifyDataSetChanged()
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun resetList() {
         searchResult.clear()
-        notifyDataSetChanged()
     }
 
 

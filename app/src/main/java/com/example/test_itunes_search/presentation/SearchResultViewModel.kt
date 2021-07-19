@@ -1,6 +1,7 @@
 package com.example.test_itunes_search.presentation
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.test_itunes_search.domain.NetworkUseCase
@@ -19,17 +20,21 @@ class SearchResultViewModel(private val networkUseCase: NetworkUseCase) : ViewMo
             field = value
         }
 
-    val itemsLiveData: MutableLiveData<List<SearchResult>> by lazy {
+    private val _itemsLiveData: MutableLiveData<List<SearchResult>> by lazy {
         MutableLiveData<List<SearchResult>>()
     }
 
-    val errorsLiveData: MutableLiveData<String> by lazy {
+    val itemsLiveData: LiveData<List<SearchResult>> = _itemsLiveData
+
+    private val _errorsLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
 
+    val errorsLiveData: LiveData<String> = _errorsLiveData
+
     fun getSearchResult() {
         if (searchText.isBlank()) {
-            errorsLiveData.value = "search text is empty"
+            _errorsLiveData.value = "search text is empty"
             return
         }
         getSearchResult(searchText, page)
@@ -56,19 +61,21 @@ class SearchResultViewModel(private val networkUseCase: NetworkUseCase) : ViewMo
                     )
                 }
                 .doFinally { newPostsLoading = false }
-                .subscribe { list ->
+                .subscribe ({ list ->
                     if (list.isEmpty()) {
-                        errorsLiveData.value = "not found result"
+                        _errorsLiveData.value = "not found result"
                     } else {
-                        itemsLiveData.value = list
+                        _itemsLiveData.value = list
                     }
-                }
+                }, {error -> _errorsLiveData.value = error.message}
+
+                )
         )
     }
 
     private fun resetSearch() {
         page = 0
-        errorsLiveData.value = "reset"
+        _errorsLiveData.value = "reset"
     }
 
     fun clearData() {

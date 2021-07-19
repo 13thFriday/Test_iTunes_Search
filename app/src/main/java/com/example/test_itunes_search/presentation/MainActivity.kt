@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_itunes_search.App
 import com.example.test_itunes_search.R
-import com.example.test_itunes_search.di.component.ViewModelComponent
 import com.example.test_itunes_search.presentation.adapter.SearchResultAdapter
 import com.example.test_itunes_search.utils.hideKeyboardEx
 import com.example.test_itunes_search.utils.showSnackBar
@@ -26,10 +25,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createDaggerDependencies()
+        (application as App).getViewModelComponent().inject(this)
 
         initViews()
-        initRecyclerView()
         viewModel.apply {
             itemsLiveData.observe(this@MainActivity, {
                 searchResultAdapter.updateData(it)
@@ -49,15 +47,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onDestroy()
     }
 
-    private fun createDaggerDependencies() {
-        injectDependency((application as App).getViewModelComponent())
-    }
+    private fun initViews() {
+        findViewById<Button>(R.id.btnSearch).setOnClickListener {
+            this.hideKeyboardEx()
+            viewModel.apply {
+                searchText = findViewById<EditText>(R.id.etTerm).text.toString()
+                getSearchResult()
+            }
+        }
 
-    private fun injectDependency(component: ViewModelComponent) {
-        component.inject(this)
-    }
-
-    private fun initRecyclerView() {
         val dividerItemDecoration = DividerItemDecoration(this, RecyclerView.VERTICAL)
         searchResultAdapter = SearchResultAdapter(this)
         recyclerView = findViewById<RecyclerView>(R.id.rvSearchResult).apply {
@@ -73,15 +71,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 })
         }
         ResourcesCompat.getDrawable(baseContext.resources, R.drawable.divider, null)?.let { dividerItemDecoration.setDrawable(it) }
-    }
-
-    private fun initViews() {
-        findViewById<Button>(R.id.btnSearch).setOnClickListener {
-            this.hideKeyboardEx()
-            viewModel.apply {
-                searchText = findViewById<EditText>(R.id.etTerm).text.toString()
-                getSearchResult()
-            }
-        }
     }
 }
