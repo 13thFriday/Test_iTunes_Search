@@ -20,7 +20,7 @@ class SearchResultViewModel(private val networkUseCase: NetworkUseCase) : ViewMo
     }
 
     fun getSearchResult() {
-        getSearchResult(searchText, page, Constants.ITEMS_PER_REQUEST)
+        getSearchResult(searchText, page)
         page++
     }
 
@@ -28,14 +28,14 @@ class SearchResultViewModel(private val networkUseCase: NetworkUseCase) : ViewMo
         if (position + 2 > page * Constants.ITEMS_PER_REQUEST) { // page * ITEMS_PER_REQUEST = size of our list
             if(!newPostsLoading) {
                 page++
-                getSearchResult(searchText, page, Constants.ITEMS_PER_REQUEST)
+                getSearchResult(searchText, page)
             }
         }
     }
 
-    private fun getSearchResult(term: String, offset: Int, limit: Int) {
+    private fun getSearchResult(term: String, offset: Int) {
         disposables.add(
-                networkUseCase.getSearchResults(term, offset, limit)
+                networkUseCase.getSearchResults(term, offset)
                         .doOnSubscribe { newPostsLoading = true }
                         .doOnError {
                             Log.e(this.javaClass.simpleName, it.message

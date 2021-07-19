@@ -9,8 +9,8 @@ class NetworkUseCase(
     private val networkRepository: NetworkRepository
 ) {
 
-    fun getSearchResults(term: String, offset: Int, limit: Int): Single<List<SearchResult>> {
-        return networkRepository.getSearchResult(term, offset, limit)
+    fun getSearchResults(term: String, offset: Int): Single<List<SearchResult>> {
+        return networkRepository.getSearchResult(term, offset)
             .compose(singleTransformation())
             .map { response -> response.body()?.results ?: emptyList()}
     }
