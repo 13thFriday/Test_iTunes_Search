@@ -24,6 +24,15 @@ class SearchResultViewModel(private val networkUseCase: NetworkUseCase) : ViewMo
         page++
     }
 
+    fun tryPaginate(position: Int) {
+        if (position + 2 > page * Constants.ITEMS_PER_REQUEST) { // page * ITEMS_PER_REQUEST = size of our list
+            if(!newPostsLoading) {
+                page++
+                getSearchResult(searchText, page, Constants.ITEMS_PER_REQUEST)
+            }
+        }
+    }
+
     private fun getSearchResult(term: String, offset: Int, limit: Int) {
         disposables.add(
                 networkUseCase.getSearchResults(term, offset, limit)

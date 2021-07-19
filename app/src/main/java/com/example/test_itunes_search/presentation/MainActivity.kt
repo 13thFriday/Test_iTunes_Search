@@ -16,10 +16,9 @@ import com.example.test_itunes_search.utils.hideKeyboardEx
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
     @Inject
     lateinit var viewModel: SearchResultViewModel
-
-    private var pageCount: Int = 0
 
     private lateinit var searchResultAdapter: SearchResultAdapter
     private lateinit var recyclerView: RecyclerView
@@ -53,6 +52,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             adapter = searchResultAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
             addItemDecoration(dividerItemDecoration)
+            addOnScrollListener(
+                object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (dy > 0) viewModel.tryPaginate((layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition())
+                    }
+                })
         }
         ResourcesCompat.getDrawable(baseContext.resources, R.drawable.divider, null)?.let { dividerItemDecoration.setDrawable(it) }
     }
