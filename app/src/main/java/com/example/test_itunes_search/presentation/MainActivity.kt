@@ -13,6 +13,7 @@ import com.example.test_itunes_search.R
 import com.example.test_itunes_search.di.component.ViewModelComponent
 import com.example.test_itunes_search.presentation.adapter.SearchResultAdapter
 import com.example.test_itunes_search.utils.hideKeyboardEx
+import com.example.test_itunes_search.utils.showSnackBar
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -29,6 +30,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         initViews()
         initRecyclerView()
+        viewModel.apply {
+            itemsLiveData.observe(this@MainActivity, {
+                searchResultAdapter.updateData(it)
+            })
+            errorsLiveData.observe(this@MainActivity, {
+                when (it) {
+                    "reset" -> searchResultAdapter.resetList()
+                    else -> showSnackBar(recyclerView, it)
+                }
+            })
+        }
     }
 
     override fun onDestroy() {
@@ -64,12 +76,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun initViews() {
-        findViewById<Button>(R.id.btnSearch).setOnClickListener { this.hideKeyboardEx()
+        findViewById<Button>(R.id.btnSearch).setOnClickListener {
+            this.hideKeyboardEx()
             viewModel.apply {
                 searchText = findViewById<EditText>(R.id.etTerm).text.toString()
-                itemsLiveData.observe(this@MainActivity, {
-                    searchResultAdapter.updateData(it)
-                })
                 getSearchResult()
             }
         }

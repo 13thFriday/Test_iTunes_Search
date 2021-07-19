@@ -55,6 +55,12 @@ class SearchResultAdapter(private val context: Context):
         notifyDataSetChanged()
     }
 
+    fun resetList() {
+        searchResult.clear()
+        notifyDataSetChanged()
+    }
+
+
     override fun getItemCount(): Int {
         return searchResult.size
     }
