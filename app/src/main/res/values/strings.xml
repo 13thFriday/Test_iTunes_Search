@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Test_iTunes_Search</string>
+
+    <string name="search_label">Search</string>
 </resources>
