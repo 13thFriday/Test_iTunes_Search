@@ -47,11 +47,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun initRecyclerView() {
+        val dividerItemDecoration = DividerItemDecoration(this, RecyclerView.VERTICAL)
         searchResultAdapter = SearchResultAdapter(this)
         recyclerView = findViewById<RecyclerView>(R.id.rvSearchResult).apply {
             adapter = searchResultAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
+            addItemDecoration(dividerItemDecoration)
         }
+        ResourcesCompat.getDrawable(baseContext.resources, R.drawable.divider, null)?.let { dividerItemDecoration.setDrawable(it) }
     }
 
     private fun initViews() {
