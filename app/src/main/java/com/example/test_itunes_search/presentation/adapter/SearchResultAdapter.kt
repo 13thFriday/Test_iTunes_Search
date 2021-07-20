@@ -80,29 +80,42 @@ class SearchResultAdapter(private val context: Context):
 
     inner class SongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val tvWrapperType = itemView.findViewById<TextView>(R.id.tvWrapperType)
+        private val tvArtistName = itemView.findViewById<TextView>(R.id.tvArtistName)
+        private val tvTrackName = itemView.findViewById<TextView>(R.id.tvTrackName)
+
         fun bind(searchResult: SearchResult) {
-            itemView.findViewById<TextView>(R.id.tvWrapperType).text = itemView.context.getString(R.string.song_label)
-            itemView.findViewById<TextView>(R.id.tvArtistName).text = searchResult.artistName
-            itemView.findViewById<TextView>(R.id.tvTrackName).text = searchResult.trackName
+            tvWrapperType.text = itemView.context.getString(R.string.song_label)
+            tvArtistName.text = searchResult.artistName
+            tvTrackName.text = searchResult.trackName
         }
     }
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val tvWrapperType = itemView.findViewById<TextView>(R.id.tvWrapperType)
+        private val tvArtistName = itemView.findViewById<TextView>(R.id.tvArtistName)
+        private val tvTrackName = itemView.findViewById<TextView>(R.id.tvTrackName)
+        private val tvLongDescription = itemView.findViewById<TextView>(R.id.tvLongDescription)
+
         fun bind(searchResult: SearchResult) {
-            itemView.findViewById<TextView>(R.id.tvWrapperType).text = itemView.context.getString(R.string.movie_label)
-            itemView.findViewById<TextView>(R.id.tvArtistName).text = searchResult.artistName
-            itemView.findViewById<TextView>(R.id.tvTrackName).text = searchResult.trackName
-            itemView.findViewById<TextView>(R.id.tvLongDescription).text = searchResult.longDescription
+            tvWrapperType.text = itemView.context.getString(R.string.movie_label)
+            tvArtistName.text = searchResult.artistName
+            tvTrackName.text = searchResult.trackName
+            tvLongDescription.text = searchResult.longDescription
         }
     }
 
     inner class AnotherTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val tvWrapperType = itemView.findViewById<TextView>(R.id.tvWrapperType)
+        private val tvArtistName = itemView.findViewById<TextView>(R.id.tvArtistName)
+        private val tvCollectionName = itemView.findViewById<TextView>(R.id.tvCollectionName)
+
         fun bind(searchResult: SearchResult) {
-            itemView.findViewById<TextView>(R.id.tvWrapperType).text = searchResult.wrapperType
-            itemView.findViewById<TextView>(R.id.tvArtistName).text = searchResult.artistName
-            itemView.findViewById<TextView>(R.id.tvCollectionName).text = searchResult.collectionName
+            tvWrapperType.text = searchResult.wrapperType
+            tvArtistName.text = searchResult.artistName
+            tvCollectionName.text = searchResult.collectionName
         }
     }
 }
